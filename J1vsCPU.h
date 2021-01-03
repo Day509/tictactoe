@@ -2,13 +2,25 @@
 #include <stdlib.h>
 #include <time.h>
 
-int gagnant(int *(tab)[3],int joueur[])
+void affichageTAB(int (*tab)[3])
+{
+	for(int j=0 ;j < 3; j++)
+	{
+		for(int i = 0;i < 3; i++)
+		{
+			printf("[%d]", tab[i][j]);
+		}
+		printf("\n");
+	}
+}
+
+int gagnant(int (*tab)[3],int joueur[])
 {
 	for (int j = 0; j < 3; j++)
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			if ((i < 3) && (j == 0))
+			if ((i < 3) && (j == 0))//Vérifie un gagnant dans chaque colonne à la verticale 
 			{
 				if((tab[i][j] == joueur[0]) && (tab[i][j+1] == joueur[0]) && (tab[i][j+2] == joueur[0]))
 				{
@@ -42,6 +54,19 @@ int gagnant(int *(tab)[3],int joueur[])
 					return 1;
 				}
 			}
+			if ((i == 2) && (j == 0))
+			{
+				if((tab[i][j] == joueur[0]) && (tab[i-1][j+1] == joueur[0]) && (tab[i-2][j+2] == joueur[0]))
+				{
+
+					return 1;
+				}
+				else if((tab[i][j] == joueur[1]) && (tab[i-1][j+1] == joueur[1]) && (tab[i-2][j+2] == joueur[1]))
+				{
+
+					return 1;
+				}
+			}
 			if ((i == 2) && (j == 2))
 			{
 				if((tab[i][j] == joueur[0]) && (tab[i-1][j-1] == joueur[0]) && (tab[i-2][j-2] == joueur[0]))
@@ -55,6 +80,7 @@ int gagnant(int *(tab)[3],int joueur[])
 					return 1;
 				}
 			}
+
 		}
 	}
 	return 0;
@@ -64,12 +90,14 @@ int gagnant(int *(tab)[3],int joueur[])
 
 void Presentation_JoueurvsCPU()
 {
+	srand(time(NULL));
 	int grille[3][3]={0};
 	int joueur[2]={1,2};
+	int i = 0; int j = 0;
 	int x = joueur[0];
-	int compris = 0; fini = 0;
+	int compris = 0; int fini = 0;
 	while(compris != 1){
-		printf("Bonjour\nBienvenue dans le mode Joueur VS CPU\n Le principe est simple, Vous devez taper les coordonnées de la case que vous voulez choisir puis appuyez sur entrer\nExemple: 1.3 correspond à la première colonne de la troisième ligne\n");
+		printf("Bonjour\nBienvenue dans le mode Joueur VS CPU\n Le principe est simple, Vous devez taper les coordonnées de la case que vous voulez choisir puis appuyez sur entrer\nExemple: 1.3 correspond à la première colonne de la troisième ligne\n\n Et n'oubliez pas le '.' entre les chiffres\n");
 		printf("Si vous avez tous compris tapez 1 : ");
 		scanf("%d", &compris);
 		printf("\n");
@@ -81,9 +109,59 @@ void Presentation_JoueurvsCPU()
 	{
 		if (x == joueur[0])
 		{
-			/* code */
+			printf("Où voulez-vous placez votre pion?\n");
+			scanf("%d.%d", &i, &j);
+			printf("\nVoici i: %d, j: %d\n", i,j);
+			if((i >= 4) || (j >= 4))
+			{
+				while ((i >= 4) || (j >= 4))
+				{
+					printf("Votre saisie n'est pas bonne, veuillez réesayer\n");
+					scanf("%d.%d\n", &i, &j);
+				}
+			}
+			i = i-1; j = j-1;
+
+			while(grille[i][j] != 0)
+			{
+				printf("Cette case est déja prise, Veuillez saisir une autre case\n");
+				scanf("%d.%d\n", &i, &j);
+			}
+			grille[i][j] = x;
+			affichageTAB(grille);
+			if(gagnant(grille,joueur) == 1)
+			{
+				printf("Le joueur %d à gagner\n", x);
+				fini = 1;
+			}
+			printf("C'est au tour du CPU de jouer\n");
+			x = joueur[1];
 		}
-		printf("Où voulez-vous placez votre pion?\n");
+		else if (x == joueur[1])
+		{
+			i = rand()%3;
+			j = rand()%3;
+
+			while(grille[i][j] != 0)
+			{
+				i = rand()%3;
+				j = rand()%3;
+			}
+
+			grille[i][j] = x;
+			affichageTAB(grille);
+			if(gagnant(grille,joueur) == 1)
+			{
+				printf("Le joueur %d à gagner\n", x);
+				fini = 1;
+			}
+			printf("C'est au tour du joueur 1 de jouer\n");
+			x = joueur[0];
+			
+		}
+
+
+		
 
 	}
 }
