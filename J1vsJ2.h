@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "win.h"
 
-void affichageTAB(int (*tab)[3])
+void affichageTAB(char** tab)
 {
 	for(int i=0 ;i < 3; i++)
 	{
@@ -14,67 +15,13 @@ void affichageTAB(int (*tab)[3])
 	}
 }
 
-int gagnant(int (*tab)[3],int joueur[])
-{
-	for (int i = 0; i < 3; i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
-			if ((i < 3) && (j == 0))//Vérifie un gagnant à l'horizontale 
-			{
-				if((tab[i][j] == joueur[0]) && (tab[i][j+1] == joueur[0]) && (tab[i][j+2] == joueur[0]))
-				{
-					return 1;
-				}
-				else if((tab[i][j] == joueur[1]) && (tab[i][j+1] == joueur[1]) && (tab[i][j+2] == joueur[1]))
-				{
-					return 1;
-				}
-			}
-			if ((i == 0) && (j < 3))//Vérifie un gagnant à la verticale
-			{
-				if((tab[i][j] == joueur[0]) && (tab[i+1][j] == joueur[0]) && (tab[i+2][j] == joueur[0]))
-				{
-					return 1;
-				}
-				if((tab[i][j] == joueur[1]) && (tab[i+1][j] == joueur[1]) && (tab[i+2][j] == joueur[1]))
-				{
-					return 1;
-				}
-			}
-			if ((i == 0) && (j == 0))//Vérifie un gagnant en diagonale gauche-droite
-			{
-				if((tab[i][j] == joueur[0]) && (tab[i+1][j+1] == joueur[0]) && (tab[i+2][j+2] == joueur[0]))
-				{
-					return 1;
-				}
-				else if((tab[i][j] == joueur[1]) && (tab[i+1][j+2] == joueur[1]) && (tab[i+2][j+2] == joueur[1]))
-				{
-					return 1;
-				}
-			}
-			if ((i == 2) && (j == 0))//Vérifie un gagnant en diagonale droite-gauche
-			{
-				if((tab[i][j] == joueur[0]) && (tab[i-1][j+1] == joueur[0]) && (tab[i-2][j+2] == joueur[0]))
-				{
-					return 1;
-				}
-				else if((tab[i][j] == joueur[1]) && (tab[i-1][j+1] == joueur[1]) && (tab[i-2][j+2] == joueur[1]))
-				{
-					return 1;
-				}
-			}
-		}
-	}
-	return 0;
-}
-void Presentation_J1vsJ2()
+void Presentation_J1vsJ2(char** grille, char* joueur)
 {
 	srand(time(NULL));
-	int grille[3][3]={0};
-	int joueur[2]={1,2};
-	int i = 0; int j = 0;int x; int a;
-	int compris = 0; int fini = 0; int nul=0;
+	
+	int i = 0, j = 0, a = rand()%2;
+	char x = joueur[a];
+	int compris = 0, fini = 0, nul=0;
 	printf("Bonjour\nBienvenue dans le mode J1 VS J2\n");
 	while(compris != 1)
 	{
@@ -85,8 +32,8 @@ void Presentation_J1vsJ2()
 	}
 
 	printf("Bien commençons\n");
-	a = rand()%2;
-	x = joueur[a];
+	
+	
 	printf("C'est le joueur %d qui commence\n", x);
 
 	while(fini != 1)
@@ -112,8 +59,8 @@ void Presentation_J1vsJ2()
 				scanf("%d.%d\n", &i, &j);
 			}
 			grille[i][j] = x;
-			affichage(grille);
-			if(win(grille,joueur) == 1)
+			affichageTAB(grille);
+			if(gagnant(grille, 0,joueur) == 1)
 			{
 				printf("Le joueur %d à gagner\n", x);
 				fini = 1;
@@ -145,8 +92,8 @@ void Presentation_J1vsJ2()
 				scanf("%d.%d\n", &i, &j);
 			}
 			grille[i][j] = x;
-			affichage(grille);
-			if(win(grille,joueur) == 1)
+			affichageTAB(grille);
+			if(gagnant(grille, 1,joueur) == 1)
 			{
 				printf("Le joueur %d à gagner\n", x);
 				fini = 1;
