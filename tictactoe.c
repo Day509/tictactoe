@@ -2,17 +2,17 @@
 #include <stdlib.h>
 #include <time.h>
 
-void gagnant(char (*grille)[3], int* rempli, int a, char* joueur)
+int gagnant(char** grille, int a, char* joueur)
 {
 	int i,j;
 	for (i = 0; i < 3; i++)// On vérifie chaque colonne
 	{
 		j = 0;
 		if (grille[i][j] == joueur[a] && grille[i][j+1] == joueur[a] && grille[i][j+2] == joueur[a]) 
-			{
-				printf("\nLes %c ont gagnés\n\n", joueur[a]);
-				*rempli = 1;
-			}
+		{
+			printf("\nLes %c ont gagnés\n\n", joueur[a]);
+			return 1;
+		}
 	}
 	for (j = 0; j < 3; j++)//On verifie chaque ligne
 	{
@@ -20,43 +20,35 @@ void gagnant(char (*grille)[3], int* rempli, int a, char* joueur)
 		if(grille[i][j] == joueur[a] && grille[i+1][j] == joueur[a] && grille[i+2][j] == joueur[a])
 		{
 			printf("\nLes %c ont gagnés\n\n", joueur[a]);
-			*rempli = 1;
+			return 1;
 		}
 	}
 	i = 0; j = 0;
 	
-		if(grille[i][j] == joueur[a] && grille[i+1][j+1]== joueur[a] && grille[i+2][j+2] == joueur[a])// On vérifie la diagonale de gauche à droite 
-		{
-			printf("\nLes %c ont gagnés\n\n", joueur[a]);
-			*rempli = 1;
-		}
+	if(grille[i][j] == joueur[a] && grille[i+1][j+1]== joueur[a] && grille[i+2][j+2] == joueur[a])// On vérifie la diagonale de gauche à droite 
+	{
+		printf("\nLes %c ont gagnés\n\n", joueur[a]);
+		return 1;
+	}
 	i = 2; j = 0;
 	
 	if(grille[i][j] == joueur[a] && grille[i-1][j+1] == joueur[a] && grille[i-2][j+2] == joueur[a])//On vérifie la diagonale de droite à gauche
-		{
-			printf("\nLes %c ont gagnés\n\n", joueur[a]);
-			*rempli = 1;
-		}
+	{
+		printf("\nLes %c ont gagnés\n\n", joueur[a]);
+		return 1;
+	}
+	return 0;
 }
 
-int main(int argc, char const *argv[])
-{
+void jeu(char** tab, char* p){
 	srand(time(NULL));
-	int i = 0; int j = 0; int a; int b; int aleatoire = rand()%2;
-	int rempli = 0; int verification;
-	char joueur[2] ={'X','O'};
-	int x = joueur[aleatoire];
-	char grille[3][3] = 
-	{
-		{'_','_','_'},
-		{'_','_','_'},
-		{'_','_','_'}
-	};
-
-
+	int aleatoire = rand()%2;
+	char tour = p[aleatoire];
+	int rempli = 0;
 	while(rempli != 1)
 	{
-		verification = 0;
+		int a, b, i, j;
+		int verification = 0;
 		printf("Où voulez-vous placez le curseur ? ");
 		a = rand()%3;
 		b = rand()%3;
@@ -64,7 +56,7 @@ int main(int argc, char const *argv[])
 		{
 			for (j = 0; j < 3; j++)
 			{
-				while(grille[a][b] == joueur[0] || grille[a][b] == joueur[1])
+				while(tab[a][b] == p[0] || tab[a][b] == p[1])
 				{
 					a = rand()%3;
 					b = rand()%3;
@@ -73,17 +65,17 @@ int main(int argc, char const *argv[])
 		}
 		i = a; j = b;
 		printf("Voici i:%d et voici j:%d\n", i,j);
-		if (x == joueur[0])
+		if (tour == p[0])
 		{
-			grille[i][j] = x;
-			x = joueur[1];
+			tab[i][j] = tour;
+			tour = p[1];
 			printf("c'est au tour du joueur 1\n");
 		}
 
-		else if (x == joueur[1])
+		else if (tour == p[1])
 		{
-			grille[i][j] = x;
-			x = joueur[0];
+			tab[i][j] = tour;
+			tour = p[0];
 			printf("c'est au tour du joueur 2\n");
 		}
 
@@ -91,20 +83,26 @@ int main(int argc, char const *argv[])
 		{
 			for (j = 0; j < 3; j++)
 			{
-				printf("[%c]", grille[i][j]);
+				printf("[%c]", tab[i][j]);
 			}
 			printf("\n");
 		}
 
-		gagnant(grille,&rempli,0,joueur);
-			
-		gagnant(grille,&rempli,1,joueur);		
-			
-		for (i = 0; i < 3; i++) // On vérifie la grille pour savoir si il y a un gagnant 
+		if (gagnant(tab, 0, p) == 1)
+		{
+			rempli = 1;
+		}
+		else if (gagnant(tab, 1, p) == 1)
+		{
+			rempli = 1;
+		}
+
+		else{
+			for (i = 0; i < 3; i++) // On vérifie la grille pour savoir si il y a un gagnant 
 			{
 				for (j = 0; j < 3; j++)
 				{
-					if(grille[i][j] != '_')
+					if(tab[i][j] != '_')
 					{
 						verification ++;
 					}
@@ -114,7 +112,28 @@ int main(int argc, char const *argv[])
 					}
 				}
 			}
+		}		
+			
+		
 	}
+}
+
+int main(int argc, char const *argv[])
+{
+	
+	char* joueur = malloc(sizeof(char)*2);
+	char** grille = malloc(sizeof(char[3][3]));
+	
+	joueur[0] = 'X', joueur[1] = 'O';
+	for (int a = 0; a < 3; a++)
+	{
+		for (int b = 0; b < 3; b++)
+		{
+			grille[a][b] = '_';
+		}
+	}
+	jeu(grille, joueur);
+
 
 	return 0;
 }
