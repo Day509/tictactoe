@@ -9,7 +9,7 @@ void affichageTAB(char** tab)
 	{
 		for(int j = 0;j < 3; j++)
 		{
-			printf("[%d]", tab[i][j]);
+			printf("[%c]", tab[i][j]);
 		}
 		printf("\n");
 	}
@@ -25,7 +25,7 @@ void Presentation_J1vsJ2(char** grille, char* joueur)
 	printf("Bonjour\nBienvenue dans le mode J1 VS J2\n");
 	while(compris != 1)
 	{
-		printf("Le principe est simple, Vous devez taper les coordonnées de la case que vous voulez choisir puis appuyez sur entrer\nExemple: 1.3 correspond à la troisième colonne de la première ligne\n\nEt n'oubliez pas le '.' entre les chiffres\n");
+		printf("Le principe est simple, Vous devez taper les coordonnées de la case que vous voulez choisir puis appuyez sur entrer\nExemple: 1.3 correspond a la troisième colonne de la première ligne\n\nEt n'oubliez pas le '.' entre les chiffres\n");
 		printf("Si vous avez tous compris tapez 1 : ");
 		scanf("%d", &compris);
 		printf("\n");
@@ -34,7 +34,7 @@ void Presentation_J1vsJ2(char** grille, char* joueur)
 	printf("Bien commençons\n");
 	
 	
-	printf("C'est le joueur %d qui commence\n", x);
+	printf("C'est le joueur %c qui commence\n", x);
 
 	while(fini != 1)
 	{
@@ -53,16 +53,15 @@ void Presentation_J1vsJ2(char** grille, char* joueur)
 			}
 			i = i-1; j = j-1;
 
-			while(grille[i][j] != 0)
+			while(grille[i][j] != '_')
 			{
 				printf("Cette case est déja prise, Veuillez saisir une autre case\n");
 				scanf("%d.%d\n", &i, &j);
 			}
 			grille[i][j] = x;
-			affichageTAB(grille);
 			if(gagnant(grille, 0,joueur) == 1)
 			{
-				printf("Le joueur %d à gagner\n", x);
+				printf("Le joueur %c a gagner\n", x);
 				fini = 1;
 			}
 			else
@@ -86,16 +85,15 @@ void Presentation_J1vsJ2(char** grille, char* joueur)
 			}
 			i = i-1; j = j-1;
 
-			while(grille[i][j] != 0)
+			while(grille[i][j] != '_')
 			{
 				printf("Cette case est déja prise, Veuillez saisir une autre case\n");
 				scanf("%d.%d\n", &i, &j);
 			}
 			grille[i][j] = x;
-			affichageTAB(grille);
 			if(gagnant(grille, 1,joueur) == 1)
 			{
-				printf("Le joueur %d à gagner\n", x);
+				printf("Le joueur %c a gagner\n", x);
 				fini = 1;
 			}
 			else
@@ -105,11 +103,13 @@ void Presentation_J1vsJ2(char** grille, char* joueur)
 			}
 			
 		}
-		for (int a = 0; a < 3; a++)
+
+		affichageTAB(grille);
+		for (int z = 0; z < 3; z++)
 		{
 			for (int b = 0; b < 3; b++)
 			{
-				if (grille[a][b] != 0)
+				if (grille[z][b] != '_')
 				{
 					nul += 1;
 				}
