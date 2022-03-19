@@ -10,7 +10,7 @@ int gagnant(char** grille, int a, char* joueur)
 		j = 0;
 		if (grille[i][j] == joueur[a] && grille[i][j+1] == joueur[a] && grille[i][j+2] == joueur[a]) 
 		{
-			printf("\nLes %c ont gagnés\n\n", joueur[a]);
+			printf("\nLes %c ont gagnes\n\n", joueur[a]);
 			return 1;
 		}
 	}
@@ -19,7 +19,7 @@ int gagnant(char** grille, int a, char* joueur)
 		i = 0;
 		if(grille[i][j] == joueur[a] && grille[i+1][j] == joueur[a] && grille[i+2][j] == joueur[a])
 		{
-			printf("\nLes %c ont gagnés\n\n", joueur[a]);
+			printf("\nLes %c ont gagnes\n\n", joueur[a]);
 			return 1;
 		}
 	}
@@ -27,14 +27,14 @@ int gagnant(char** grille, int a, char* joueur)
 	
 	if(grille[i][j] == joueur[a] && grille[i+1][j+1]== joueur[a] && grille[i+2][j+2] == joueur[a])// On vérifie la diagonale de gauche à droite 
 	{
-		printf("\nLes %c ont gagnés\n\n", joueur[a]);
+		printf("\nLes %c ont gagnes\n\n", joueur[a]);
 		return 1;
 	}
 	i = 2; j = 0;
 	
 	if(grille[i][j] == joueur[a] && grille[i-1][j+1] == joueur[a] && grille[i-2][j+2] == joueur[a])//On vérifie la diagonale de droite à gauche
 	{
-		printf("\nLes %c ont gagnés\n\n", joueur[a]);
+		printf("\nLes %c ont gagnes\n\n", joueur[a]);
 		return 1;
 	}
 	return 0;
@@ -49,7 +49,7 @@ void jeu(char** tab, char* p){
 	{
 		int a, b, i, j;
 		int verification = 0;
-		printf("Où voulez-vous placez le curseur ? ");
+		printf("Ou voulez-vous placez le curseur ? ");
 		a = rand()%3;
 		b = rand()%3;
 		for (i = 0; i < 3; i++)
@@ -132,8 +132,18 @@ int main(int argc, char const *argv[])
 			grille[a][b] = '_';
 		}
 	}
-	jeu(grille, joueur);
-
-
+	
+	printf("Choissisez votre mode: \n1: CPUvsCPU       \nQuel est votre choix: ");
+	int mode = scanf("%i", &mode);
+	
+	switch (mode)
+	{
+	case 1:
+		jeu(grille, joueur);
+		break;
+	
+	default:
+		break;
+	}
 	return 0;
 }
