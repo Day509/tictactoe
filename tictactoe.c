@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "J1vsJ2.h"
+#include "win.h"
 #include "CPUvsCPU.h"
+#include "J1vsCPU.h"
+#include "J1vsJ2.h"
 
 int main(int argc, char const *argv[])
 {
@@ -29,6 +31,7 @@ int main(int argc, char const *argv[])
 			break;
 
 		case 2:
+			Presentation_JoueurvsCPU(grille, joueur);
 			break;
 			
 		case 3:

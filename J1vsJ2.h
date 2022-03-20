@@ -1,19 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "win.h"
-
-void affichageTAB(char** tab)
-{
-	for(int i=0 ;i < 3; i++)
-	{
-		for(int j = 0;j < 3; j++)
-		{
-			printf("[%c]", tab[i][j]);
-		}
-		printf("\n");
-	}
-}
 
 void Presentation_J1vsJ2(char** grille, char* joueur)
 {
@@ -31,7 +18,7 @@ void Presentation_J1vsJ2(char** grille, char* joueur)
 		printf("\n");
 	}
 
-	printf("Bien commençons\n");
+	printf("C'est parti\n\n");
 	
 	
 	printf("C'est le joueur %c qui commence\n", x);
@@ -40,7 +27,7 @@ void Presentation_J1vsJ2(char** grille, char* joueur)
 	{
 		if (x == joueur[0])
 		{
-			printf("Où voulez-vous placez votre pion?\n");
+			printf("Ou voulez-vous placez votre pion?\n");
 			scanf("%d.%d", &i, &j);
 			printf("\nVoici i: %d, j: %d\n", i,j);
 			if((i >= 4) || (j >= 4))
@@ -72,7 +59,7 @@ void Presentation_J1vsJ2(char** grille, char* joueur)
 		}
 		else if (x == joueur[1])
 		{
-			printf("Où voulez-vous placez votre pion?\n");
+			printf("Ou voulez-vous placez votre pion?\n");
 			scanf("%d.%d", &i, &j);
 			printf("\nVoici i: %d, j: %d\n", i,j);
 			if((i >= 4) || (j >= 4))

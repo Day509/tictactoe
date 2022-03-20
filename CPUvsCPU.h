@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-
-
 void jeu(char** tab, char* p){
 	srand(time(NULL));
 	int aleatoire = rand()%2;
